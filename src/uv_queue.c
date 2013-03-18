@@ -1,7 +1,7 @@
 //
 // A terrible queue for buffers in libuv
 //
-#include "uv/include/uv.h"
+#include <uv.h>
 #include <stdlib.h>
 typedef void (*uv_queue_change_cb)(int index, int change);
 struct uv_queue_s {

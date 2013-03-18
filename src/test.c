@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/select.h>
-#include "uv/include/uv.h"
-#include "curl/include/curl/curl.h"
+#include <uv.h>
+#include <curl.h>
 #include "uv_queue.c"
 
 uv_loop_t *loop;
@@ -167,6 +167,14 @@ int main(int argc, char **argv) {
   setup_interval((uv_queue_t*)pipe->data);
   int count = 1;
   curl_multi_perform( curl_handle, &count );
+  
+  uv_process_options_t spawn_options = malloc(sizeof(uv_process_options_t));
+  spawn_options.args = {"sleep","100",NULL};
+  spawn_options.file = "sleep";
+  spawn_options.stdio_count = 4;
+  spawn_options.stdio = {};
+  spawn_options.flags = UV_PROCESS_DETACHED;
+  uv_spawn();
 
   uv_run(loop, UV_RUN_DEFAULT);
   curl_multi_cleanup(curl_handle);
